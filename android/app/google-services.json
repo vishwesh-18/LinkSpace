@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "657004457465",
+    "project_id": "linkspace-84e7f",
+    "storage_bucket": "linkspace-84e7f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:657004457465:android:be0e04240fa0c618546128",
+        "android_client_info": {
+          "package_name": "com.example.linkspace"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUNlxsuodPqAMAzFmgaoCsDe91uZvk1Eg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -8,15 +8,9 @@ class MeetScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final jitsiMeet = JitsiMeet();
 
-    jitsiMeet.join(
-      JitsiMeetConferenceOptions(
-        serverURL: "https://meet.jit.si",
-        room: meetController.callRoom.value,
-        userInfo: JitsiMeetUserInfo(displayName: "User"),
-      ),
-    );
+
+
 
     return Scaffold(
       appBar: AppBar(
@@ -27,6 +21,7 @@ class MeetScreen extends StatelessWidget {
           style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.buttonColor),
           onPressed: () {
+
             meetController.endCall();
             Get.offAllNamed('/');
           },
