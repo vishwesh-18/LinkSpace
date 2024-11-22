@@ -5,18 +5,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-import 'package:get/get_common/get_reset.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:linkspace/HomeScreen.dart';
+import 'package:linkspace/MeetScreen.dart';
 import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class NotificationService {
+
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   static final FlutterLocalNotificationsPlugin
       _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
   Logger logger = Logger();
-  // Get the FCM token
+
   Future<String?> getFCMToken() async {
     try {
       // Get the device's FCM token
@@ -70,7 +72,7 @@ class NotificationService {
   Future<void> initlocalNotification(
       BuildContext context, RemoteMessage message) async {
     var androidInitializationSettings =
-        const AndroidInitializationSettings("@mipmap/ic_luncher");
+        const AndroidInitializationSettings("@mipmap/ic_launcher");
     var initilizationSettings = InitializationSettings(
       android: androidInitializationSettings,
     );
@@ -92,7 +94,7 @@ class NotificationService {
       }
 
       initlocalNotification(context, message);
-    shownotification(message);
+       shownotification(message);
     });
   }
 
@@ -110,8 +112,14 @@ class NotificationService {
     });
   }
 
-  Future<void> handleMessage(BuildContext context, RemoteMessage) async {
-    Get.offAll(HomeScreen());
+  Future<void> handleMessage(BuildContext context, RemoteMessage message) async {
+    print('room name');
+    print(message.data['room']);
+    var roomId = message.data['room'];
+
+    Get.offAll(MeetScreen(meetingId: roomId));
+    print("Navigating to the call");
+
   }
 
   Future<void> shownotification(RemoteMessage message) async {
@@ -128,9 +136,10 @@ class NotificationService {
         importance: Importance.high,
         playSound: true,
         );
-    // Future.delayed(Duration.zero,(){
-    //   _flutterLocalNotificationsPlugin.show(0, message.notification!.title, message.notification!.body, notificationDetails,payload: "mydata")
-    // });
+    NotificationDetails notificationDetails = NotificationDetails(android: androidNotificationDetails);
+    Future.delayed(Duration.zero,(){
+      _flutterLocalNotificationsPlugin.show(0, message.notification!.title, message.notification!.body, notificationDetails,payload: "mydata");
+    });
 
 
 

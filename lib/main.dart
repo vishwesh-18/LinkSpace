@@ -11,7 +11,7 @@ import 'package:linkspace/firebase_options.dart';
 
 @pragma('vm:entry-point')
 
-Future<void> _firebaseMessagingBackgroundHandler() async {
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -21,7 +21,7 @@ WidgetsFlutterBinding.ensureInitialized();
 await Firebase.initializeApp(
   options: DefaultFirebaseOptions.currentPlatform,
 );
-// FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+ FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   runApp(MyApp());
 }
 
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       getPages: [
         GetPage(name: '/', page: () => LoginScreen()),
-        GetPage(name: '/call', page: () => MeetScreen()),
+
       ],
     );
   }

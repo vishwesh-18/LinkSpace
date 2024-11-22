@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:linkspace/Service/FcmService.dart';
+
 import 'package:linkspace/Service/NotificationService.dart';
+import 'package:linkspace/Service/SendNotification.dart';
 import 'package:linkspace/controller/MeetController.dart';
 import 'package:linkspace/utils/AppColors.dart';
 import 'package:logger/logger.dart';
@@ -22,10 +23,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+
     notificationService.requestPermission();
-    FcmService.firebaseinit();
+    notificationService.firebaseInit(context);
+    notificationService.setupInteractMessage(context);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +55,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 labelText: 'Email',
               ),
             ),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             // TextField(
             //   controller: roomController,
             //   decoration: InputDecoration(
@@ -66,15 +72,21 @@ class _HomeScreenState extends State<HomeScreen> {
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.buttonColor),
-              onPressed: () {
-                final room = roomController.text.trim();
+              onPressed: () async {
+                // final room = roomController.text.trim();
                 final email = emailController.text.trim();
-                if (room.isNotEmpty||email.isNotEmpty) {
-                  meetController.startCall(email);
-                  meetController.getUserDetailsByEmail(email);
+                if (email.isNotEmpty) {
+                  await meetController.getUserDetailsByEmail(email);
+                  SendNotificationService.SendNotificationUsingapi(
+                      token: meetController.fcmToken.value,
+                      title: "Incoming Call",
+                      body: email,
+                      data: {'room': email, 'screen': 'JoinMeet'});
+                  // meetController.startCall(email);
+
                   logger.i(meetController.fcmToken.value);
                   logger.i(meetController.username.value);
-                 // Get.toNamed('/call');
+                  // Get.toNamed('/call');
                 }
               },
               child: Text(
